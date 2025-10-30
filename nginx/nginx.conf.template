@@ -1,15 +1,15 @@
 upstream node_backend {
-    server app_blue:${PORT} max_fails=1 fail_timeout=1s ${UPSTREAM_BLUE_ROLE};
-    server app_green:${PORT} max_fails=1 fail_timeout=1s $(UPSTREAM_GREEN_ROLE);
+    server app_blue:${PORT} max_fails=1 fail_timeout=1s $UPSTREAM_BLUE_ROLE;
+    server app_green:${PORT} max_fails=1 fail_timeout=1s $UPSTREAM_GREEN_ROLE;
     keepalive 16;
 }
 
 server {
     listen 80;
     # --- Aggressive Failure Detection ---
-    proxy_connect_timeout 0.5s;
-    proxy_send_timeout 1s;
-    proxy_read_timeout 1s;
+    proxy_connect_timeout 500ms;
+    proxy_send_timeout 1000ms;
+    proxy_read_timeout 1000ms;
 
     # --- Critical Retry Policy
     proxy_next_upstream error timeout http_500 http_502 http_503 http_504;
